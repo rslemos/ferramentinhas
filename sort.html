@@ -26,7 +26,11 @@
 				if (buffer.slice(-1)[0] == '')
 					buffer = buffer.slice(0, -1);
 
-				buffer.sort();
+				var compare = $('select[name="direction"]').val() == 'desc'
+					? function(a,b) { return a == b ? 0 : a < b ? 1 : -1; }
+					: function(a,b) { return a == b ? 0 : a < b ? -1 : 1; };
+
+				buffer.sort(compare);
 				$('#stdout').empty().append(buffer.join('\n'));
 			}
 
@@ -35,6 +39,7 @@
 				// sort immediately
 				sort();
 
+				$('select').change(sort);
 
 				sort = postponeInvocationUntilQuiescent(sort, 2000);
 				$('#stdin').keyup(sort).on('cut', sort).on('paste', sort);
@@ -43,6 +48,12 @@
 	</head>
 
 	<body>
+		<header>
+			<select name="direction">
+				<option value="asc" selected>Crescente</option>
+				<option value="desc"        >Descrescente</option>
+			</select>
+		</header>
 		<textarea id="stdin"></textarea>
 		<pre id="stdout"></pre>
 	</body>
