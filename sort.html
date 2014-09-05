@@ -30,6 +30,7 @@
 
 				var accent = parseInt($('select[name="accent"]').val());
 				var caze = parseInt($('select[name="case"]').val());
+				var caseFirst = $('select[name="caseFirst"]').val();
 
 				var sensitivity = accent << 1 | caze;
 
@@ -38,7 +39,7 @@
 
 				var compare = locale == ''
 					? function(a,b) { return a == b ? 0 : a < b ? -1 : 1; }
-					: new Intl.Collator(locale, { sensitivity: ['variant', 'accent', 'case', 'base'][sensitivity], numeric: numeric }).compare;
+					: new Intl.Collator(locale, { sensitivity: ['variant', 'accent', 'case', 'base'][sensitivity], numeric: numeric, caseFirst: caseFirst }).compare;
 
 				if ($('select[name="direction"]').val() == 'desc')
 					compare = (function(compare){ return function(a,b) { return -compare(a,b); }; })(compare);
@@ -90,6 +91,12 @@
 			<select name="case">
 				<option value="1"         >iguais (a = A)</option>
 				<option value="0" selected>diferentes (a ≠ A)</option>
+			</select>
+
+			<label for="caseFirst">Antes (depois se decrescente)</label>
+			<select name="caseFirst">
+				<option value="upper" selected>Maiúsculas</option>
+				<option value="lower"         >Minúsculas</option>
 			</select>
 
 			<input type="checkbox" name="numeric"><label for="numeric">Sequência de dígitos (0-9) como números (2 &lt; 10)</label>
