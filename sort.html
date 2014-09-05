@@ -31,7 +31,7 @@
 
 				var sensitivity = accent << 1 | caze;
 
-				var locale = $('input[name="locale"]').val();
+				var locale = $('input[name="customlocale"]').val();
 
 				var compare = locale == ''
 					? function(a,b) { return a == b ? 0 : a < b ? -1 : 1; }
@@ -48,6 +48,10 @@
 
 				// sort immediately
 				sort();
+
+				$('select[name="locale"]').change(function() {
+					$('input[name="customlocale"]').val($(this).val());
+				});
 
 				$('select').change(sort);
 
@@ -66,7 +70,13 @@
 			</select>
 			
 			<label for="locale">Locale</label>
-			<input type="text" name="locale">
+			<select name="locale">
+				<option value="" selected>Unicode</option>
+				<option value="pt-BR"    >Português (Brasil)</option>
+				<option value="en-US"    >Inglês (Estados Unidos)</option>
+				<option value="de-DE"    >Alemão (Alemanha)</option>
+			</select>
+			<input type="text" name="customlocale">
 			
 			<label for="accent">Acentos são</label>
 			<select name="accent">
