@@ -55,8 +55,7 @@
 
 				$('select').change(sort);
 
-				$('#stdin').keyup(sort1).on('cut', sort1).on('paste', sort1);
-				$('input').keyup(sort1).on('cut', sort1).on('paste', sort1);
+				$('#stdin, input').keyup(sort1).on('cut', sort1).on('paste', sort1);
 
 				// sort immediately
 				sort();
