@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Sort - Ferramentinhas</title>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+		<script type="text/javascript">
+			function postponeInvocationUntilQuiescent(fn, ms) {
+				var timeout = null;
+				return function() {
+					timeout && clearTimeout(timeout);
+
+					// capture this and arguments
+					var t = this;
+					var args = Array.prototype.slice.call(arguments, 0);
+					timeout = setTimeout(function() {
+						timeout = null;
+						fn.apply(t, args);
+					}, ms);
+				};
+			}
+
+			function sort() {
+				var buffer = $('#stdin').val().split('\n');
+				if (buffer.slice(-1)[0] == '')
+					buffer = buffer.slice(0, -1);
+
+				buffer.sort();
+				$('#stdout').empty().append(buffer.join('\n'));
+			}
+
+			$(function() {
+
+				// sort immediately
+				sort();
+
+
+				sort = postponeInvocationUntilQuiescent(sort, 2000);
+				$('#stdin').keyup(sort).on('cut', sort).on('paste', sort);
+			});
+		</script>
+	</head>
+
+	<body>
+		<textarea id="stdin"></textarea>
+		<pre id="stdout"></pre>
+	</body>
+</html>
