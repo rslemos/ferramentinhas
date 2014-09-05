@@ -39,7 +39,11 @@
 
 				var compare = locale == ''
 					? function(a,b) { return a == b ? 0 : a < b ? -1 : 1; }
-					: new Intl.Collator(locale, { sensitivity: ['variant', 'accent', 'case', 'base'][sensitivity], numeric: numeric, caseFirst: caseFirst }).compare;
+					: new Intl.Collator(locale, { 
+						sensitivity: ['variant', 'accent', 'case', 'base'][sensitivity],
+						numeric: numeric,
+						caseFirst: caseFirst
+					}).compare;
 
 				if ($('select[name="direction"]').val() == 'desc')
 					compare = (function(compare){ return function(a,b) { return -compare(a,b); }; })(compare);
