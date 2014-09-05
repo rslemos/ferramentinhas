@@ -22,6 +22,8 @@
 			}
 
 			function sort() {
+				$('#stdout').empty();
+
 				var buffer = $('#stdin').val().split('\n');
 				if (buffer.slice(-1)[0] == '')
 					buffer = buffer.slice(0, -1);
@@ -41,7 +43,7 @@
 					compare = (function(compare){ return function(a,b) { return -compare(a,b); }; })(compare);
 
 				buffer.sort(compare);
-				$('#stdout').empty().append(buffer.join('\n'));
+				$('#stdout').append(buffer.join('\n'));
 			}
 
 			$(function() {
