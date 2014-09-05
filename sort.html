@@ -47,9 +47,7 @@
 			}
 
 			$(function() {
-
-				// sort immediately
-				sort();
+				var sort1 = postponeInvocationUntilQuiescent(sort, 2000);
 
 				$('select[name="locale"]').change(function() {
 					$('input[name="customlocale"]').val($(this).val());
@@ -57,9 +55,11 @@
 
 				$('select').change(sort);
 
-				sort = postponeInvocationUntilQuiescent(sort, 2000);
-				$('#stdin').keyup(sort).on('cut', sort).on('paste', sort);
-				$('input').keyup(sort).on('cut', sort).on('paste', sort);
+				$('#stdin').keyup(sort1).on('cut', sort1).on('paste', sort1);
+				$('input').keyup(sort1).on('cut', sort1).on('paste', sort1);
+
+				// sort immediately
+				sort();
 			});
 		</script>
 	</head>
