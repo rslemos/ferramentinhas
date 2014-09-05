@@ -26,9 +26,14 @@
 				if (buffer.slice(-1)[0] == '')
 					buffer = buffer.slice(0, -1);
 
-				var compare = $('select[name="direction"]').val() == 'desc'
-					? function(a,b) { return a == b ? 0 : a < b ? 1 : -1; }
-					: function(a,b) { return a == b ? 0 : a < b ? -1 : 1; };
+				var locale = $('input[name="locale"]').val();
+
+				var compare = locale == ''
+					? function(a,b) { return a == b ? 0 : a < b ? -1 : 1; }
+					: new Intl.Collator(locale).compare;
+
+				if ($('select[name="direction"]').val() == 'desc')
+					compare = (function(compare){ return function(a,b) { return -compare(a,b); }; })(compare);
 
 				buffer.sort(compare);
 				$('#stdout').empty().append(buffer.join('\n'));
@@ -43,6 +48,7 @@
 
 				sort = postponeInvocationUntilQuiescent(sort, 2000);
 				$('#stdin').keyup(sort).on('cut', sort).on('paste', sort);
+				$('input').keyup(sort).on('cut', sort).on('paste', sort);
 			});
 		</script>
 	</head>
@@ -53,6 +59,10 @@
 				<option value="asc" selected>Crescente</option>
 				<option value="desc"        >Descrescente</option>
 			</select>
+			
+			<label for="locale">Locale</label>
+			<input type="text" name="locale">
+			
 		</header>
 		<textarea id="stdin"></textarea>
 		<pre id="stdout"></pre>
